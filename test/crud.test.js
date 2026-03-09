@@ -22,7 +22,6 @@ describe("Prisma Client", () => {
   });
 
   it("should be able to update customer", async () => {
-    // buat data dulu
     await prismaClient.customer.create({
       data: {
         id: "Elham1",
@@ -32,19 +31,31 @@ describe("Prisma Client", () => {
       },
     });
 
-    // lalu update
     const customer = await prismaClient.customer.update({
-      where: {
-        id: "Elham1",
-      },
+      where: { id: "Elham1" },
+      data: { name: "M Elham Abdussalam" },
+    });
+
+    expect(customer.name).toBe("M Elham Abdussalam");
+  });
+
+  it("should be able to read customer", async () => {
+    await prismaClient.customer.create({
       data: {
-        name: "M Elham Abdussalam",
+        id: "Elham1",
+        email: "elham1@email.com",
+        name: "Elham1",
+        phone: "089999999999",
       },
+    });
+
+    const customer = await prismaClient.customer.findUnique({
+      where: { id: "Elham1" },
     });
 
     expect(customer.id).toBe("Elham1");
     expect(customer.email).toBe("elham1@email.com");
-    expect(customer.name).toBe("M Elham Abdussalam");
+    expect(customer.name).toBe("Elham1");
     expect(customer.phone).toBe("089999999999");
   });
 });
