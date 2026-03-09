@@ -1,0 +1,19 @@
+{
+  "name": "nodejs-database",
+  "version": "1.0.0",
+  "description": "Belajar NodeJS Database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "author": "M Elham Abdussalam",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "@types/jest": "^30.0.0",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "prisma": "^6.19.2"
+  }
+}
