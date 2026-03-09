@@ -58,4 +58,24 @@ describe("Prisma Client", () => {
     expect(customer.name).toBe("Elham1");
     expect(customer.phone).toBe("089999999999");
   });
+
+  it("should be able to delete customer", async () => {
+    await prismaClient.customer.create({
+      data: {
+        id: "Elham1",
+        email: "elham1@email.com",
+        name: "Elham1",
+        phone: "089999999999",
+      },
+    });
+
+    const customer = await prismaClient.customer.delete({
+      where: { id: "Elham1" },
+    });
+
+    expect(customer.id).toBe("Elham1");
+    expect(customer.email).toBe("elham1@email.com");
+    expect(customer.name).toBe("Elham1");
+    expect(customer.phone).toBe("089999999999");
+  });
 });
