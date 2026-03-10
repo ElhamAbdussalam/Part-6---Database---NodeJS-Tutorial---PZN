@@ -3,9 +3,9 @@ import { prismaClient } from "../prisma-client";
 // jest.setTimeout(20000);
 
 describe("CRUD Many", () => {
-  // beforeEach(async () => {
-  //   await prismaClient.customer.deleteMany();
-  // });
+  beforeEach(async () => {
+    await prismaClient.customer.deleteMany();
+  });
 
   // afterAll(async () => {
   //   await prismaClient.$disconnect();
@@ -49,5 +49,10 @@ describe("CRUD Many", () => {
       where: { name: "Tidak ada" },
     });
     expect(count).toBe(0);
+  });
+
+  it("should be able to read many", async () => {
+    const customer = await prismaClient.customer.findMany({});
+    expect(customer.length).toBe(3);
   });
 });
