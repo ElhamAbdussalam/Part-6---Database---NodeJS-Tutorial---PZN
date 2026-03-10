@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,68 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id   String @id
-  name String
-}
-
 model Customer {
-  id String @id
-  name String
-  email String @unique
-  phone String @unique
-  wallet Wallet?
+  id       String    @id
+  name     String
+  email    String    @unique
+  phone    String    @unique
   comments Comment[]
-  likes Like[]
-  loves Product[] @relation("loves")
+  likes    Like[]
+  wallet   Wallet?
+  loves    Product[] @relation("loves")
 
   @@map("customers")
 }
 
 model Product {
-  id String @id
-  name String
-  price Int
-  stock Int
+  id       String     @id
+  name     String
+  price    Int
+  stock    Int
   category String
-  likedBy Like[]
-  lovedBy Customer[] @relation("loves")
+  likedBy  Like[]
+  lovedBy  Customer[] @relation("loves")
 
   @@map("products")
 }
 
 model Category {
-  id Int @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String
 
   @@map("categories")
 }
 
 model Wallet {
-  id String @id
-  balance Int
-  customer Customer @relation(fields: [customer_id], references: [id])
-  customer_id String @unique
+  id          String   @id
+  balance     Int
+  customer_id String   @unique
+  customer    Customer @relation(fields: [customer_id], references: [id])
 
   @@map("wallet")
 }
 
 model Comment {
-  id Int @id @default(autoincrement())
-  title String @db.VarChar(200)
-  description String? @db.Text
-  customer_id String @db.VarChar(100)
-  customer Customer @relation(fields: [customer_id], references: [id], map:"customer_to_comment_fk")
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(200)
+  description String?  @db.Text
+  customer_id String   @db.VarChar(100)
+  customer    Customer @relation(fields: [customer_id], references: [id], map: "customer_to_comment_fk")
 
+  @@index([customer_id], map: "customer_to_comment_fk")
   @@map("comments")
 }
 
 model Like {
   customer_id String
-  product_id String
-  customer Customer @relation(fields: [customer_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
+  product_id  String
+  customer    Customer @relation(fields: [customer_id], references: [id])
+  product     Product  @relation(fields: [product_id], references: [id])
 
   @@id([customer_id, product_id])
+  @@index([product_id], map: "likes_product_id_fkey")
   @@map("likes")
+}
+
+model sample {
+  id   String @id
+  name String
+}
+
+model categories {
+  id Int @id @default(autoincrement())
+  name String
+}
+
+model comments{
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(200)
+  description String? @db.Text
+  customer_id String @db.VarChar(100)
+  customers customers @relation(fields: [customer_id], references: [id], map:"customer_to_comment_fk"),
+  @@index([customer_id], map:"customer_to_comment_fk")
 }
