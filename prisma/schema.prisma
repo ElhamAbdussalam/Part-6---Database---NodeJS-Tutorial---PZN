@@ -26,6 +26,7 @@ model Customer {
   wallet Wallet?
   comments Comment[]
   likes Like[]
+  loves Product[] @relation("loves")
 
   @@map("customers")
 }
@@ -37,6 +38,7 @@ model Product {
   stock Int
   category String
   likedBy Like[]
+  lovedBy Customer[] @relation("loves")
 
   @@map("products")
 }
