@@ -21,4 +21,16 @@ describe("One to one", () => {
 
     console.info(wallet);
   });
+
+  it("should be able to find one to one", async () => {
+    const customer = await prismaClient.customer.findUnique({
+      where: {
+        id: "elham",
+      },
+      include: {
+        wallet: true,
+      },
+    });
+    console.info(customer);
+  });
 });
