@@ -13,6 +13,13 @@ describe("Aggregate", () => {
       _avg: {
         price: true,
       },
+      having: {
+        price: {
+          _avg: {
+            gt: 3000,
+          },
+        },
+      },
     });
 
     for (const item of result) {
@@ -20,5 +27,20 @@ describe("Aggregate", () => {
         `Category ${item.category}, min ${item._min.price} max ${item._max.price} avg ${item._avg.price}`,
       );
     }
+
+    const products = await prismaClient.product.findMany({
+      where: {
+        OR: [{ name: "A" }, { name: "B" }],
+      },
+      orderBy: [
+        {
+          name: "asc",
+        },
+      ],
+    });
+
+    expect(products).toHaveLength(2);
+    expect(products[0].name).toBe("A");
+    expect(products[1].name).toBe("B");
   });
 });
