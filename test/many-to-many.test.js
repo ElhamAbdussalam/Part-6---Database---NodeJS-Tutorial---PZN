@@ -53,19 +53,34 @@ import { prismaClient } from "../prisma-client";
 
 describe("Many to many implicit", () => {
   it("should be able to many to many", async () => {
-    const customer = await prismaClient.customer.update({
+    // const customer = await prismaClient.customer.update({
+    //   where: {
+    //     id: "eko",
+    //   },
+    //   data: {
+    //     loves: {
+    //       connect: [{ id: "P0001" }, { id: "P0002" }],
+    //     },
+    //   },
+    //   include: {
+    //     loves: true,
+    //   },
+    // });
+    // console.info(JSON.stringify(customer));
+    const customers = await prismaClient.customer.findMany({
       where: {
-        id: "eko",
-      },
-      data: {
         loves: {
-          connect: [{ id: "P0001" }, { id: "P0002" }],
+          some: {
+            name: {
+              contains: "A",
+            },
+          },
         },
       },
       include: {
         loves: true,
       },
     });
-    console.info(JSON.stringify(customer));
+    console.info(JSON.stringify(customers));
   });
 });
