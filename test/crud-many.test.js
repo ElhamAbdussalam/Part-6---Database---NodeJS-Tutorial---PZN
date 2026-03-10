@@ -43,4 +43,11 @@ describe("CRUD Many", () => {
     });
     expect(count).toBe(1);
   });
+
+  it("should be able to delete many", async () => {
+    const { count } = await prismaClient.customer.deleteMany({
+      where: { name: "Tidak ada" },
+    });
+    expect(count).toBe(0);
+  });
 });
