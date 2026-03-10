@@ -1,15 +1,15 @@
 import { prismaClient } from "../prisma-client";
 
-jest.setTimeout(20000);
+// jest.setTimeout(20000);
 
 describe("CRUD Many", () => {
-  beforeEach(async () => {
-    await prismaClient.customer.deleteMany();
-  });
+  // beforeEach(async () => {
+  //   await prismaClient.customer.deleteMany();
+  // });
 
-  afterAll(async () => {
-    await prismaClient.$disconnect();
-  });
+  // afterAll(async () => {
+  //   await prismaClient.$disconnect();
+  // });
 
   it("should be able to create many", async () => {
     const { count } = await prismaClient.customer.createMany({
@@ -30,5 +30,17 @@ describe("CRUD Many", () => {
     });
 
     expect(count).toBe(2);
+  });
+
+  it("should be able to update many", async () => {
+    const { count } = await prismaClient.customer.updateMany({
+      data: {
+        email: "elhamm@email",
+      },
+      where: {
+        name: "elham",
+      },
+    });
+    expect(count).toBe(1);
   });
 });
