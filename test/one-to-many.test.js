@@ -14,27 +14,43 @@ describe("One to many", () => {
     // });
     // console.info(comment);
 
-    const customer = await prismaClient.customer.create({
-      data: {
-        id: "alex",
-        name: "alex",
-        email: "alex@email",
-        phone: "12345678",
+    // const customer = await prismaClient.customer.create({
+    //   data: {
+    //     id: "alex",
+    //     name: "alex",
+    //     email: "alex@email",
+    //     phone: "12345678",
+    //     comments: {
+    //       createMany: {
+    //         data: [
+    //           {
+    //             title: "Comment 1",
+    //             description: "Description comment 1",
+    //           },
+    //           {
+    //             title: "Comment 2",
+    //             description: "Description comment 2",
+    //           },
+    //         ],
+    //       },
+    //     },
+    //   },
+    // });
+
+    const customer = await prismaClient.customer.findMany({
+      where: {
         comments: {
-          createMany: {
-            data: [
-              {
-                title: "Comment 1",
-                description: "Description comment 1",
-              },
-              {
-                title: "Comment 2",
-                description: "Description comment 2",
-              },
-            ],
+          some: {
+            title: {
+              contains: "Comment",
+            },
           },
         },
       },
+      include: {
+        comments: true,
+      },
     });
+    console.info(customer);
   });
 });
