@@ -14,9 +14,31 @@ describe("Many to many", () => {
     // });
     // console.info(like);
 
-    const customer = await prismaClient.customer.findUnique({
+    // const customer = await prismaClient.customer.findUnique({
+    //   where: {
+    //     id: "eko",
+    //   },
+    //   include: {
+    //     likes: {
+    //       include: {
+    //         product: true,
+    //       },
+    //     },
+    //   },
+    // });
+    // console.info(JSON.stringify(customer));
+
+    const customer = await prismaClient.customer.findMany({
       where: {
-        id: "eko",
+        likes: {
+          some: {
+            product: {
+              name: {
+                contains: "A",
+              },
+            },
+          },
+        },
       },
       include: {
         likes: {
@@ -26,6 +48,5 @@ describe("Many to many", () => {
         },
       },
     });
-    console.info(JSON.stringify(customer));
   });
 });
